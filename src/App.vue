@@ -1,4 +1,13 @@
 <script setup>
+import { useQuestionsStore } from './stores/questions';
+import { onMounted } from 'vue';
+const questions = useQuestionsStore();
+
+questions.loadQuestions();
+
+onMounted(() => {
+  console.log(questions.getQuestionCount('101'));
+}) 
 
 </script>
 

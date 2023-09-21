@@ -1,8 +1,8 @@
-<script setup>
+<!-- <script setup>
 </script>
 
 <template>
 </template>
 
 <style scoped>
-</style>
+</style> -->
