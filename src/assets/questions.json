@@ -1,4 +1,4 @@
-export const questions = {
+{
   "101": [
     {
       "questionNumber": "1",

@@ -1,31 +1,38 @@
 <script setup>
+import './index.css'
 import { useQuestionsStore } from './stores/questions';
-import { onMounted } from 'vue';
+
+
 const questions = useQuestionsStore();
 
 questions.loadQuestions();
-
-onMounted(() => {
-  console.log(questions.getQuestionCount('101'));
-}) 
 
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
+    <div>  
       <nav>
         <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/learning">Learning-Mode</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
     </div>
   </header>
 
-  <RouterView />
+  <body>
+    <div>
+    
+      <RouterView />
+      
+    </div>
+  </body>
+
+  <footer>
+    test 123
+  </footer>
+
 </template>
 
 <style>
