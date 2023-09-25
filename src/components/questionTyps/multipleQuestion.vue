@@ -6,7 +6,7 @@ const props = defineProps(['question'])
 
 <template>
         <label>
-                <div v-for="item in props.question.choices" :key="item.text">
+                <div v-for="item in props.question.choices" :key="item.text" >
                         <li>
                                 {{ item.text }}
                         </li>
