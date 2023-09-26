@@ -16,6 +16,7 @@ questions.loadQuestions();
         <RouterLink to="/dashboard">Dashboard</RouterLink>
         <RouterLink to="/dashboard/question">Question</RouterLink>
         <RouterLink to="/dashboard/questlist">QuestionList</RouterLink>
+        <RouterLink to="/dashboard/check">Check-Mode</RouterLink>
       </nav>
     </div>
   </header>

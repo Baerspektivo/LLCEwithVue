@@ -9,7 +9,7 @@ export const useQuestionsStore = defineStore('useQuestionsStore', {
   }),
   
   //computed getters
-  // getters: {
+   getters: {
   //   getCategorys: (state) => {
   //     return state.categorys
   //   },
@@ -38,7 +38,17 @@ export const useQuestionsStore = defineStore('useQuestionsStore', {
   //   getQuestionByQuestionNumber: (state) => {
   //     return state.questions.filter(question => question === question.questionNumber)
   //   }
-  // },
+  // getQuestionsByCategory: (state) => {
+  //   return state.question.filter(question => {
+  //     if (question.category == 101) {
+  //       console.log(this.question.category);
+  //       return question.category == 101
+  //     }else{
+  //       return question.category == 102
+  //     }
+  //   }) 
+  // }
+   },
   
   //actions setter
   actions: {
@@ -46,7 +56,7 @@ export const useQuestionsStore = defineStore('useQuestionsStore', {
     loadQuestions() {
       // console.log(this.questions);
       const data = questions
-      console.log(data)
+      // console.log('Store daten',data)
       Object.keys(data).forEach((key) => {
         this.categorys.push(key)
         data[key].forEach((question) => {
