@@ -1,19 +1,17 @@
 <script setup>
-import { ref} from 'vue';
+import { ref, computed } from 'vue';
 import singleQuestion from '../../components/checkQuestionTyps/checkSingleQuestion.vue';
 import multipleQuestion from '../../components/checkQuestionTyps/checkMultipleQuestion.vue';
 import inputQuestion from '../../components/checkQuestionTyps/checkInputQuestion.vue';
 import { useQuestionsStore } from '../../stores/questions';
-
-
+import { storeToRefs } from 'pinia';
 
 const questionsStore = useQuestionsStore();
 
+const { questions } = storeToRefs(questionsStore);
 
 const currentQuestionIndex = ref(0);
 const toogleButton = ref(true);
-const arrayCatgory101 = ref([]);
-const arrayCategory102 = ref([]);
 
 function showNextQuestion() {
     currentQuestionIndex.value += 1;
@@ -24,20 +22,20 @@ function showNextQuestion() {
 
 function showPreviusQuestion() {
     currentQuestionIndex.value -= 1;
-    if (currentQuestionIndex.value <= 0) {
+    if (currentQuestionIndex.value < 0) {
         currentQuestionIndex.value = questionsStore.questions.length - 1;
     }
 }
 
-
-for (let index = 0; index < questionsStore.questions.length; index++) {
-    if (questionsStore.questions[index].category == 101) {
-        arrayCatgory101.value.push(questionsStore.questions[index])
-    }else{
-        arrayCategory102.value.push(questionsStore.questions[index])
-    };
-}
-
+const currentQuestions = computed(() => {
+    return questions.value.filter(question => {
+        if (toogleButton.value) {
+            return question.category.toString() === '101';
+        } else {
+            return question.category.toString() === '102';
+        }
+    })
+})
 
 </script>
 
@@ -48,66 +46,40 @@ for (let index = 0; index < questionsStore.questions.length; index++) {
             <button @click="toogleButton = false">Catalog 102</button>
         </div>
         <div class="question-container">
-                    <div v-if="toogleButton"
-                class="question-block">
-                <h2>Catalog {{ arrayCatgory101[currentQuestionIndex].category }} </h2>
-                <div>
-                    <h3>Question: {{ arrayCatgory101[currentQuestionIndex].questionNumber }}</h3>
-                    <div class="question-text">
-                        Question: {{ arrayCatgory101[currentQuestionIndex].questionText }}
-                    </div>
-                </div>
-                <div class="choice-text">
+            
+            <div>
+                <div class="question-block">
+                    <h2>Catalog {{ currentQuestions[currentQuestionIndex].category }} </h2>
                     <div>
-                        <singleQuestion v-if="arrayCatgory101[currentQuestionIndex].questionType === 'single'"
-                            :question="questionsStore.questions[currentQuestionIndex]" />
+                        <h3>Question: {{ currentQuestions[currentQuestionIndex].questionNumber }}</h3>
+                        <div class="question-text">
+                            Question: {{ currentQuestions[currentQuestionIndex].questionText }}
+                        </div>
                     </div>
+                    <div class="choice-text">
+                        <div>
+                            <singleQuestion v-if="currentQuestions[currentQuestionIndex].questionType === 'single'"
+                                :question="currentQuestions[currentQuestionIndex]" @choice="(value) => console.log('pick', value)"/>
+                        </div>
 
-                    <div>
-                        <multipleQuestion v-if="arrayCatgory101.questionType === 'multiple'"
-                            :question="questionsStore.questions[currentQuestionIndex]" />
-                    </div>
-                    <div>
-                        <inputQuestion v-if="arrayCatgory101.questionType === 'input'"
-                            :question="questionsStore.questions[currentQuestionIndex]" />
-                    </div>
-                </div>
-            </div>
-
-            <div v-else-if="!toogleButton"
-                class="question-block">
-                <h2>Catalog {{ arrayCategory102[currentQuestionIndex].category }}</h2>
-                <div>
-                    <h3>Question: {{ arrayCategory102[currentQuestionIndex].questionNumber }}</h3>
-                    <div class="question-text">
-                        Question: {{ arrayCategory102[currentQuestionIndex].questionText }}
-                    </div>
-                </div>
-                <div class="choice-text">
-                    <div>
-                        <singleQuestion v-if="arrayCategory102[currentQuestionIndex].questionType === 'single'"
-                            :question="questionsStore.questions[currentQuestionIndex]" />
-                    </div>
-
-                    <div>
-                        <multipleQuestion v-if="arrayCategory102.questionType === 'multiple'"
-                            :question="questionsStore.questions[currentQuestionIndex]" />
-                    </div>
-                    <div>
-                        <inputQuestion v-if="arrayCategory102.questionType === 'input'"
-                            :question="questionsStore.questions[currentQuestionIndex]" />
+                        <div>
+                            <multipleQuestion v-if="currentQuestions.questionType === 'multiple'"
+                                :question="currentQuestions[currentQuestionIndex]" />
+                        </div>
+                        <div>
+                            <inputQuestion v-if="currentQuestions.questionType === 'input'"
+                                :question="currentQuestions[currentQuestionIndex]" />
+                        </div>
                     </div>
                 </div>
             </div>
-
 
             <div class="button-container">
                 <button @click="showPreviusQuestion">Back</button>
                 <button @click="showNextQuestion">Forward</button>
             </div>
-
+            
         </div>
-
     </div>
 </template>
 
