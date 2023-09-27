@@ -1,74 +1,57 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { useQuestionsStore } from '../../stores/questions';
+import { saveSinglChoiceAnswers } from '../../service/saveSingleChoiceAnswer';
 import singleQuestion from '../../components/checkQuestionTyps/checkSingleQuestion.vue';
 import multipleQuestion from '../../components/checkQuestionTyps/checkMultipleQuestion.vue';
 import inputQuestion from '../../components/checkQuestionTyps/checkInputQuestion.vue';
-import { useQuestionsStore } from '../../stores/questions';
-import { storeToRefs } from 'pinia';
+import catalogToggle from '../../components/buttons/catalogToggle.vue';
 
-const questionsStore = useQuestionsStore();
 
-const { questions } = storeToRefs(questionsStore);
+const questionStore = useQuestionsStore();
 
-const currentQuestionIndex = ref(0);
-const toogleButton = ref(true);
+const saveSingleAnswer = (selectedValue) => {
+    saveSinglChoiceAnswers(selectedValue);
+}
 
 function showNextQuestion() {
-    currentQuestionIndex.value += 1;
-    if (currentQuestionIndex.value >= questionsStore.questions.length) {
-        currentQuestionIndex.value = 0;
-    }
+    questionStore.showNextQuestion();
 }
 
 function showPreviusQuestion() {
-    currentQuestionIndex.value -= 1;
-    if (currentQuestionIndex.value < 0) {
-        currentQuestionIndex.value = questionsStore.questions.length - 1;
-    }
+    questionStore.showPreviusQuestion();
 }
-
-const currentQuestions = computed(() => {
-    return questions.value.filter(question => {
-        if (toogleButton.value) {
-            return question.category.toString() === '101';
-        } else {
-            return question.category.toString() === '102';
-        }
-    })
-})
 
 </script>
 
 <template>
     <div class="question-section">
         <div class="button-container">
-            <button @click="toogleButton = true">Catalog 101</button>
-            <button @click="toogleButton = false">Catalog 102</button>
+           <catalogToggle></catalogToggle>
         </div>
         <div class="question-container">
             
             <div>
                 <div class="question-block">
-                    <h2>Catalog {{ currentQuestions[currentQuestionIndex].category }} </h2>
+                    <h2>Catalog {{ questionStore.currentQuestionGetter.category }} </h2>
                     <div>
-                        <h3>Question: {{ currentQuestions[currentQuestionIndex].questionNumber }}</h3>
+                        <h3>Question: {{ questionStore.currentQuestionGetter.questionNumber }}</h3>
                         <div class="question-text">
-                            Question: {{ currentQuestions[currentQuestionIndex].questionText }}
+                            Question: {{ questionStore.currentQuestionGetter.questionText }}
                         </div>
                     </div>
                     <div class="choice-text">
                         <div>
-                            <singleQuestion v-if="currentQuestions[currentQuestionIndex].questionType === 'single'"
-                                :question="currentQuestions[currentQuestionIndex]" @choice="(value) => console.log('pick', value)"/>
+                            <singleQuestion v-if="questionStore.currentQuestionGetter.questionType === 'single'"
+                                :question="questionStore.currentQuestionGetter" @choice="saveSingleAnswer"/>
                         </div>
 
                         <div>
-                            <multipleQuestion v-if="currentQuestions.questionType === 'multiple'"
-                                :question="currentQuestions[currentQuestionIndex]" />
+                            <multipleQuestion v-if="questionStore.currentQuestionGetter.questionType === 'multiple'"
+                                :question="questionStore.currentQuestionGetter" />
                         </div>
                         <div>
-                            <inputQuestion v-if="currentQuestions.questionType === 'input'"
-                                :question="currentQuestions[currentQuestionIndex]" />
+                            <inputQuestion v-if="questionStore.currentQuestionGetter.questionType === 'input'"
+                                :question="questionStore.currentQuestionGetter" />
                         </div>
                     </div>
                 </div>

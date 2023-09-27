@@ -1,79 +1,55 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { useQuestionsStore } from '../../stores/questions';
 import singleQuestion from '../../components/listingQuestionTyps/singleQuestion.vue';
 import multipleQuestion from '../../components/listingQuestionTyps/multipleQuestion.vue';
 import inputQuestion from '../../components/listingQuestionTyps/inputQuestion.vue';
 import questionAnswer from '../../components/listingQuestionTyps/questionAnswer.vue';
-import { useQuestionsStore } from '../../stores/questions';
-import { storeToRefs } from 'pinia';
+import catalogToggle from '../../components/buttons/catalogToggle.vue';
 
-const questionsStore = useQuestionsStore();
 
-const { questions } = storeToRefs(questionsStore);
-
-const currentQuestionIndex = ref(0);
-const toggleButton = ref(true);
-
+const questionStore = useQuestionsStore();
 function showNextQuestion() {
-    currentQuestionIndex.value += 1;
-    if (currentQuestionIndex.value >= currentQuestions.value.length) {
-        currentQuestionIndex.value = 0;
-    }
+    questionStore.showNextQuestion();
 }
 
 function showPreviusQuestion() {
-    currentQuestionIndex.value -= 1;
-    if (currentQuestionIndex.value < 0) {
-        currentQuestionIndex.value = currentQuestions.value.length - 1;
-    }
+    questionStore.showPreviusQuestion();
 }
-
-const currentQuestions = computed(() => {
-    return questions.value.filter(question => {
-        if (toggleButton.value) {
-            return question.category.toString() === '101';
-        } else {
-            return question.category.toString() === '102';
-        }
-    })
-})
 
 </script>
 
+
 <template>
     <div class="question-section">
-        <div class="button-container">
-            <button @click="toggleButton = true">Catalog 101</button>
-            <button @click="toggleButton = false">Catalog 102</button>
-        </div>
+        <catalogToggle></catalogToggle>
         <div class="question-container">
             
             <div>
                 <div class="question-block">
-                    <h2>Catalog {{ currentQuestions[currentQuestionIndex].category }} </h2>
+                    <h2>Catalog {{ questionStore.currentQuestionGetter.category }} </h2>
                     <div>
-                        <h3>Question: {{ currentQuestions[currentQuestionIndex].questionNumber }}</h3>
+                        <h3>Question: {{ questionStore.currentQuestionGetter.questionNumber }}</h3>
                         <div class="question-text">
-                            Question: {{ currentQuestions[currentQuestionIndex].questionText }}
+                            Question: {{ questionStore.currentQuestionGetter.questionText }}
                         </div>
                     </div>
                     <div class="choice-text">
                         <div>
-                            <singleQuestion v-if="currentQuestions[currentQuestionIndex].questionType === 'single'"
-                                :question="currentQuestions[currentQuestionIndex]" />
+                            <singleQuestion v-if="questionStore.currentQuestionGetter.questionType === 'single'"
+                                :question="questionStore.currentQuestionGetter" />
                         </div>
 
                         <div>
-                            <multipleQuestion v-if="currentQuestions.questionType === 'multiple'"
-                                :question="currentQuestions[currentQuestionIndex]" />
+                            <multipleQuestion v-if="questionStore.currentQuestionGetter.questionType === 'multiple'"
+                                :question="questionStore.currentQuestionGetter" />
                         </div>
                         <div>
-                            <inputQuestion v-if="currentQuestions.questionType === 'input'"
-                                :question="currentQuestions[currentQuestionIndex]" />
+                            <inputQuestion v-if="questionStore.currentQuestionGetter.questionType === 'input'"
+                                :question="questionStore.currentQuestionGetter" />
                         </div>
                         <div class="answer">
                             Answer:
-                            <questionAnswer :question="currentQuestions[currentQuestionIndex]" />
+                            <questionAnswer :question="questionStore.currentQuestionGetter" />
                         </div>
                     </div>
                 </div>
