@@ -9,6 +9,7 @@ export const useAnswerStore = defineStore('useAnswerStore', {
       single: [],
       multiple: [],
       input:[],
+      
     }),
     
     //computed getters
@@ -18,8 +19,8 @@ export const useAnswerStore = defineStore('useAnswerStore', {
     //actions setter
     actions: { 
         saveSingleQuestions(){
-            Object.keys(SingleQuestion.getPicked()).forEach(() => {
-                this.single.push(...SingleQuestion.getPicked())
+            Object.keys(SingleQuestion.picked).forEach(() => {
+                this.single.push(...SingleQuestion.picked)
             })
             
         }

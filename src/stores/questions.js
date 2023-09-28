@@ -5,55 +5,56 @@ export const useQuestionsStore = defineStore('useQuestionsStore', {
   //state
   state: () => ({
     questions: [],
-    categorys: [],
+    categories: [],
     currentQuestionGetter: [],
-    toggleButton: true,
     currentQuestionIndex: 0,
+    activeCategory: '101'
   }),
-  
+
   //computed getters
    getters: {
     currentQuestionGetter(state){
-      return state.questions[state.currentQuestionIndex];
+      const filteredQuestions = this.questions.filter ((questions) => questions.category === state.activeCategory);
+      return filteredQuestions[state.currentQuestionIndex];
     },
-    
+    categoryQuestions(state) {
+      return this.questions.filter ((questions) => questions.category === state.activeCategory);
+    },
+    numberOfCategoryQuestions(state) {
+      return this.questions.filter ((questions) => questions.category === state.activeCategory).length;
+    }
    },
-  
+
   //actions setter
   actions: {
-    
+
     loadQuestions() {
-      const data = questions
+      const data = questions;
       Object.keys(data).forEach((key) => {
-        this.categorys.push(key)
+        this.categories.push(key)
         data[key].forEach((question) => {
           this.questions.push({ ...question, category: key })
         })
       })
+      this.toggleCatalog(this.activeCategory);
     },
+
     toggleCatalog(catalog){
-      if (this.toggleButton) {
-        return this.questions.filter ((questions) => questions.category === catalog)
-      }else{
-        return questions.filter ((questions) => questions.category === catalog)
-      }
-    
+      this.currentQuestionIndex = 0;
+      this.activeCategory = catalog;
     },
-      
+
     setCurrentQuestions(questions){
       this.currentQuestionGetter = questions;
     },
     showNextQuestion() {
-      this.currentQuestionIndex += 1;
-      if (this.currentQuestionIndex >= this.questions.length) {
-          this.currentQuestionIndex = 0;
+      if (this.currentQuestionIndex < this.numberOfCategoryQuestions - 1) {
+          this.currentQuestionIndex++;
       }
     },
-  
    showPreviusQuestion() {
-      this.currentQuestionIndex -= 1;
-      if (this.currentQuestionIndex < 0) {
-          this.currentQuestionIndex = this.questions.length - 1;
+     if (this.currentQuestionIndex > 0) {
+          this.currentQuestionIndex--;
       }
     },
   },

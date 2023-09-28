@@ -5,7 +5,6 @@ const questionsStore = useQuestionsStore();
 
 
 function toggleButton(catalog){
-    console.log("button was pressed");
     questionsStore.toggleCatalog(catalog);
 }
 
@@ -13,10 +12,13 @@ function toggleButton(catalog){
 
 
 <template>
-        <div class="button-container">
-            <button @click="toggleButton(101)">Catalog 101</button>
-            <button @click="toggleButton(102)">Catalog 102</button>
-        </div>
+    <div class="button-container">
+        <button v-for="category in questionsStore.categories" :key="category"
+                @click="toggleButton(category)"
+                >
+                Category {{ category }}
+        </button>
+    </div>
 </template>
 
 <style scoped>

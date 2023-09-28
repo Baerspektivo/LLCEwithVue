@@ -23,7 +23,6 @@ function showPreviusQuestion() {
     <div class="question-section">
         <catalogToggle></catalogToggle>
         <div class="question-container">
-            
             <div>
                 <div class="question-block">
                     <h2>Catalog {{ questionStore.currentQuestionGetter.category }} </h2>
