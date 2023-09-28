@@ -1,21 +1,24 @@
 <script setup>
-//import { singleChoice } from '../../service/testSingleChoice'
-import { ref } from 'vue';
+import { useQuestionsStore } from '../../stores/questions';
 
-const props = defineProps(['question'])
+const questionStore = useQuestionsStore();
 
-const picked = ref(null);
+const props = defineProps(['question']);
+
+const saveChoice = (questionNumber, event) => {
+        const picked = event.target.value;
+questionStore.checkSolved(questionNumber, picked);
+}
 
 </script>
 
 <template>
         <div v-for="item in props.question.choices" :key="item.text">
                 <label>
-                        <input type="radio" :value="item.text" v-model="picked" @click="$emit('choice', picked)" />
+                        <input type="radio" :value="item.text" name="radio" @change="(event) => saveChoice(props.question.questionNumber, event)" />
                         {{ item.text }}
                 </label>
         </div>
-        {{ picked }}
 </template>
 
 <style scoped>

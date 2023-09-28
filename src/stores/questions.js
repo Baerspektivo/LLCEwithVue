@@ -33,10 +33,30 @@ export const useQuestionsStore = defineStore('useQuestionsStore', {
       Object.keys(data).forEach((key) => {
         this.categories.push(key)
         data[key].forEach((question) => {
-          this.questions.push({ ...question, category: key })
+          this.questions.push({ ...question, category: key, solved: false })
         })
       })
       this.toggleCatalog(this.activeCategory);
+    },
+
+    checkSolved(questionNumber, answer){
+      this.questions = this.questions.map(question => {
+        if (question.questionNumber.toString() === questionNumber.toString()) {
+          return {... question, solved: answer.substring(0,1) === question.answer}
+        } else {
+          return question;
+        }
+      });
+    },
+
+    checkInput(questionNumber, answer){
+      this.questions = this.questions.map(question => {
+        if (question.questionNumber.toString() === questionNumber.toString()) {
+          return {...question, solved: answer === question.answer}
+        } else {
+          return question;
+        }
+      })
     },
 
     toggleCatalog(catalog){

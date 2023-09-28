@@ -1,6 +1,5 @@
 <script setup>
 import { useQuestionsStore } from '../../stores/questions';
-import { saveSinglChoiceAnswers } from '../../service/saveSingleChoiceAnswer';
 import singleQuestion from '../../components/checkQuestionTyps/checkSingleQuestion.vue';
 import multipleQuestion from '../../components/checkQuestionTyps/checkMultipleQuestion.vue';
 import inputQuestion from '../../components/checkQuestionTyps/checkInputQuestion.vue';
@@ -9,11 +8,8 @@ import catalogToggle from '../../components/buttons/catalogToggle.vue';
 
 const questionStore = useQuestionsStore();
 
-const saveSingleAnswer = (selectedValue) => {
-    saveSinglChoiceAnswers(selectedValue);
-}
-
 function showNextQuestion() {
+    console.log('SOLVED?', questionStore.currentQuestionGetter.solved);
     questionStore.showNextQuestion();
 }
 
@@ -42,9 +38,8 @@ function showPreviusQuestion() {
                     <div class="choice-text">
                         <div>
                             <singleQuestion v-if="questionStore.currentQuestionGetter.questionType === 'single'"
-                                :question="questionStore.currentQuestionGetter" @choice="saveSingleAnswer"/>
+                                :question="questionStore.currentQuestionGetter" />
                         </div>
-
                         <div>
                             <multipleQuestion v-if="questionStore.currentQuestionGetter.questionType === 'multiple'"
                                 :question="questionStore.currentQuestionGetter" />
