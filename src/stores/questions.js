@@ -39,10 +39,23 @@ export const useQuestionsStore = defineStore('useQuestionsStore', {
       this.toggleCatalog(this.activeCategory);
     },
 
-    checkSolved(questionNumber, answer){
+    checkSolvedSingleChoice(questionNumber, answer){
       this.questions = this.questions.map(question => {
         if (question.questionNumber.toString() === questionNumber.toString()) {
           return {... question, solved: answer.substring(0,1) === question.answer}
+        } else {
+          return question;
+        }
+      });
+    },
+
+    checkSolvedMultipleChoice(questionNumber, answer1, answer2){
+      this.questions = this.questions.map(question => {
+        if (question.questionNumber.toString() === questionNumber.toString()) {
+          const solved1 = answer1 === question.answer;
+          console.log('Antwort')
+          const solved2 = answer2 === question.answer;
+          return {... question, solved1 , solved2}
         } else {
           return question;
         }

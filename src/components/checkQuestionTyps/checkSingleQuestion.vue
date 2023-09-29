@@ -7,7 +7,7 @@ const props = defineProps(['question']);
 
 const saveChoice = (questionNumber, event) => {
         const picked = event.target.value;
-questionStore.checkSolved(questionNumber, picked);
+        questionStore.checkSolvedSingleChoice(questionNumber, picked);
 }
 
 </script>
@@ -15,11 +15,11 @@ questionStore.checkSolved(questionNumber, picked);
 <template>
         <div v-for="item in props.question.choices" :key="item.text">
                 <label>
-                        <input type="radio" :value="item.text" name="radio" @change="(event) => saveChoice(props.question.questionNumber, event)" />
+                        <input type="radio" :value="item.text" name="radio"
+                                @change="(event) => saveChoice(props.question.questionNumber, event)" />
                         {{ item.text }}
                 </label>
         </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
