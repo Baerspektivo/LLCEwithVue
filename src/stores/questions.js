@@ -49,12 +49,12 @@ export const useQuestionsStore = defineStore('useQuestionsStore', {
       });
     },
 
-    checkSolvedMultipleChoice(questionNumber, answer1, answer2){
+    checkSolvedMultipleChoice(questionNumber, answer){
+      console.log(questionNumber, answer);
       this.questions = this.questions.map(question => {
         if (question.questionNumber.toString() === questionNumber.toString()) {
-          const solved1 = answer1 === question.answer;
-          const solved2 = answer2 === question.answer;
-          return {... question, solved1 , solved2}
+          const solved = answer === question.answer;
+          return {... question, solved}
         } else {
           return question;
         }
