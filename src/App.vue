@@ -25,7 +25,6 @@ questions.loadQuestions();
     <div>
     <h1>LLCE</h1>
       <RouterView />
-    
     </div>
   </body>
 

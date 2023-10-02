@@ -8,7 +8,9 @@ export const useQuestionsStore = defineStore('useQuestionsStore', {
     categories: [],
     currentQuestionGetter: [],
     currentQuestionIndex: 0,
-    activeCategory: '101'
+    activeCategory: '101',
+    wrongCounter: 0,
+    rightCounter: 0,
   }),
 
   //computed getters
@@ -50,10 +52,9 @@ export const useQuestionsStore = defineStore('useQuestionsStore', {
     },
 
     checkSolvedMultipleChoice(questionNumber, answer){
-      console.log(questionNumber, answer);
       this.questions = this.questions.map(question => {
         if (question.questionNumber.toString() === questionNumber.toString()) {
-          const solved = answer === question.answer;
+          const solved = answer === question.answer.split('').sort().join('');
           return {... question, solved}
         } else {
           return question;
@@ -87,6 +88,20 @@ export const useQuestionsStore = defineStore('useQuestionsStore', {
    showPreviusQuestion() {
      if (this.currentQuestionIndex > 0) {
           this.currentQuestionIndex--;
+      }
+    },
+    setWrongCounter(){
+      const currentQuestion = this.currentQuestionGetter;
+      if (currentQuestion && !currentQuestion.solved) {
+        this.wrongCounter++;
+        console.log('WRONG:', this.wrongCounter)
+      }
+    },
+    setRightCounter(){
+      const currentQuestion = this.currentQuestionGetter;
+      if (currentQuestion && currentQuestion.solved) {
+        this.rightCounter++;
+        console.log('RIGHT:', this.rightCounter)
       }
     },
   },

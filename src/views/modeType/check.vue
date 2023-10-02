@@ -1,16 +1,27 @@
 <script setup>
+import { ref } from 'vue';
 import { useQuestionsStore } from '../../stores/questions';
 import singleQuestion from '../../components/checkQuestionTyps/checkSingleQuestion.vue';
 import multipleQuestion from '../../components/checkQuestionTyps/checkMultipleQuestion.vue';
 import inputQuestion from '../../components/checkQuestionTyps/checkInputQuestion.vue';
 import catalogToggle from '../../components/buttons/catalogToggle.vue';
+import PopupVue from '../../components/popup.vue';
+
 
 
 const questionStore = useQuestionsStore();
+const isOpened = ref(false)        
 
 function showNextQuestion() {
-    console.log('SOLVED?', questionStore.currentQuestionGetter.solved);
-    questionStore.showNextQuestion();
+    if (questionStore.currentQuestionGetter.solved === true) {
+        questionStore.setRightCounter();
+        questionStore.showNextQuestion();
+    }else{
+        questionStore.setWrongCounter();
+        questionStore.showPreviusQuestion();
+        isOpened.value = true;
+    }
+    
 }
 
 function showPreviusQuestion() {
@@ -19,13 +30,19 @@ function showPreviusQuestion() {
 
 </script>
 
+
 <template>
     <div class="question-section">
+        <div>
+            <teleport to="header">
+                <PopupVue v-if="isOpened" @close="isOpened = !isOpened" />
+            </teleport>
+        </div>
+        
         <div class="button-container">
            <catalogToggle></catalogToggle>
         </div>
         <div class="question-container">
-            
             <div>
                 <div class="question-block">
                     <h2>Catalog {{ questionStore.currentQuestionGetter.category }} </h2>

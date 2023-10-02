@@ -10,18 +10,18 @@ const picked = [];
 
 let answer = null;
 
-const saveChoice = (questionNumber, event, test) => {
+const saveChoice = (questionNumber, event, text) => {
 
-        picked.push(test)
-        answer = picked.filter((answer) => answer === answer )
-        console.log('arrayOUTput', picked);
-        //answer = picked.splice((answer) => answer === answer )
-        console.log('OUTPUTANSWER', answer);
-
-
-        questionStore.checkSolvedMultipleChoice(questionNumber, picked);
-        console.log('P', picked, event);
-        //console.log('P2', picked2, selectedChoice);
+        if (!picked.includes(text)) {
+                picked.push(text)
+        }else{
+                const index = picked.indexOf(text)
+                if (index !== -1) {
+                        picked.splice(index, 1)
+                }
+        }
+        answer = picked.sort().join('');
+        questionStore.checkSolvedMultipleChoice(questionNumber, answer);
 }
 
 </script>
@@ -38,6 +38,3 @@ const saveChoice = (questionNumber, event, test) => {
 </template>
 
 <style scoped></style>
-
-<!-- === props.question.answer.substring(0,1); -->
-<!-- === props.question.answer.substring(0,2); -->
