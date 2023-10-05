@@ -17,16 +17,14 @@ const closeModel = () => {
             </div>
             <article>
                 <div class="popup-content-text">
-                    The answer was wrong. Try it again.
+                    <span>The answer was wrong. <br> Try it again! </span>
                 </div>
             </article>
-            <div class="">
-                <button class="popup-close-button" @click.prevent="closeModel">
-                    <span>
-                        Close
-                    </span>
-                </button>
-            </div>
+            <button class="popup-close-button" @click.prevent="closeModel">
+                <span class="popup-close-button-text">
+                    Close
+                </span>
+            </button>
         </div>
     </div>
 </template>
@@ -38,12 +36,11 @@ const closeModel = () => {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px);
-    z-index: 9999;
 }
 
 .popup-content {
@@ -53,6 +50,7 @@ const closeModel = () => {
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     position: relative;
+    border-radius: 15px 50px;
 }
 
 .popup-header {
@@ -64,12 +62,13 @@ const closeModel = () => {
 
 .popup-title {
     font-size: 1.5rem;
+    padding-bottom: 5px;
 }
 
 .popup-close-button {
-    padding: 10px;
+    padding: 5px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 10px 5px;
     text-decoration: none;
     color: #333;
     background: none;
@@ -77,18 +76,34 @@ const closeModel = () => {
     font-size: 1rem;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
+.popup-close-button :hover {
+    padding: 5px;
+    border-radius: 5px 10px;
+    background-color: #0ca9f193;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.popup-close-button-text {
+    padding: auto;    
+    font-size: 1rem;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.popup-close-button-text :hover{
+    background-color: #0ca9f193;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
 
 .popup-close-button span {
     display: inline-block;
 }
 
-.popup-close-button :hover {
-    background-color: thistle;
-    transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
 
 .popup-content-text {
     font-size: 1rem;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 5px;
 }
 </style>

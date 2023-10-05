@@ -26,7 +26,7 @@ const router = createRouter({
         path: 'check',
         name: 'check',
         component: check
-      }
+      },
       ]
     },
   ]

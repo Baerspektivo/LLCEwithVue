@@ -11,10 +11,9 @@ const picked = [];
 let answer = null;
 
 const saveChoice = (questionNumber, event, text) => {
-
         if (!picked.includes(text)) {
                 picked.push(text)
-        }else{
+        } else {
                 const index = picked.indexOf(text)
                 if (index !== -1) {
                         picked.splice(index, 1)
@@ -23,9 +22,7 @@ const saveChoice = (questionNumber, event, text) => {
         answer = picked.sort().join('');
         questionStore.checkSolvedMultipleChoice(questionNumber, answer);
 }
-
 </script>
-
 
 <template>
         <div v-for="item in props.question.choices" :key="item.text">

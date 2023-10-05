@@ -24,12 +24,17 @@ export const useQuestionsStore = defineStore('useQuestionsStore', {
     },
     numberOfCategoryQuestions(state) {
       return this.questions.filter ((questions) => questions.category === state.activeCategory).length;
-    }
+    },
+    wrongCounterGetter(state){
+      return state.wrongCounter;
+    },
+    rightCounterGetter(state){
+      return state.rightCounter;
+    },
    },
 
   //actions setter
   actions: {
-
     loadQuestions() {
       const data = questions;
       Object.keys(data).forEach((key) => {
@@ -40,7 +45,6 @@ export const useQuestionsStore = defineStore('useQuestionsStore', {
       })
       this.toggleCatalog(this.activeCategory);
     },
-
     checkSolvedSingleChoice(questionNumber, answer){
       this.questions = this.questions.map(question => {
         if (question.questionNumber.toString() === questionNumber.toString()) {
@@ -50,7 +54,6 @@ export const useQuestionsStore = defineStore('useQuestionsStore', {
         }
       });
     },
-
     checkSolvedMultipleChoice(questionNumber, answer){
       this.questions = this.questions.map(question => {
         if (question.questionNumber.toString() === questionNumber.toString()) {
@@ -61,7 +64,6 @@ export const useQuestionsStore = defineStore('useQuestionsStore', {
         }
       });
     },
-
     checkInput(questionNumber, answer){
       this.questions = this.questions.map(question => {
         if (question.questionNumber.toString() === questionNumber.toString()) {
@@ -71,12 +73,10 @@ export const useQuestionsStore = defineStore('useQuestionsStore', {
         }
       })
     },
-
     toggleCatalog(catalog){
       this.currentQuestionIndex = 0;
       this.activeCategory = catalog;
     },
-
     setCurrentQuestions(questions){
       this.currentQuestionGetter = questions;
     },
